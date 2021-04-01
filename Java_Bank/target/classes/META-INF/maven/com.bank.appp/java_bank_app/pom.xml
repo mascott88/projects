@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bank.appp</groupId>
-	<artifactId>banking_points_app</artifactId>
+	<artifactId>java_bank_app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>banking_points_app</name>
 	<description>Bank with Points Project</description>

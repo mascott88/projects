@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS java_banking;
+CREATE SCHEMA  IF NOT EXISTS java_banking;
 
 -- Table structure 'person' table
 CREATE TABLE java_banking.person (

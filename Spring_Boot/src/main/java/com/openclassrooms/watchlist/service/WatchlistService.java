@@ -12,15 +12,27 @@ import com.openclassrooms.watchlist.repository.WatchlistRepository;
 public class WatchlistService {
 
 	WatchlistRepository watchlistRepository = new WatchlistRepository();
-	private MovieRatingService movieRatingService = new MovieRatingServiceImpl();
+	private MovieDirectoryService movieDirectoryService = new MovieDirectoryServiceImpl();
 
 	public List<WatchlistItem> getWatchlistItems() {
 
 		List<WatchlistItem> watchlistItems = watchlistRepository.getList();
 		for (WatchlistItem watchlistItem : watchlistItems) {
-			String rating = movieRatingService.getMovieRating(watchlistItem.getTitle());
+			String rating = movieDirectoryService.getMovieRating(watchlistItem.getTitle());
 			if (rating != null) {
 				watchlistItem.setRating(rating);
+			}
+			String year = movieDirectoryService.getMovieYear(watchlistItem.getTitle());
+			if (year != null) {
+				watchlistItem.setYear(year);
+			}
+			String length = movieDirectoryService.getMovieLength(watchlistItem.getTitle());
+			if (year != null) {
+				watchlistItem.setLength(length);
+			}
+			String response = movieDirectoryService.getMovieResponse(watchlistItem.getTitle());
+			if (response != null) {
+				watchlistItem.setResponse(response);
 			}
 		}
 		return watchlistItems;
@@ -41,13 +53,15 @@ public class WatchlistService {
 		if (existingItem == null) {
 			if (watchlistRepository.findByTitle(watchlistItem.getTitle()) != null) {
 				throw new DuplicateTitleException();
-			}
+			}			
 			watchlistRepository.addItem(watchlistItem);
-		} else {
+		} else {			
 			existingItem.setComment(watchlistItem.getComment());
 			existingItem.setPriority(watchlistItem.getPriority());
 			existingItem.setRating(watchlistItem.getRating());
 			existingItem.setTitle(watchlistItem.getTitle());
+			existingItem.setYear(watchlistItem.getYear());			
+			existingItem.setResponse(watchlistItem.getResponse());
 		}
 	}
 }

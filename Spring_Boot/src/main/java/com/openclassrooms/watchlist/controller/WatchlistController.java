@@ -36,7 +36,7 @@ public class WatchlistController {
 	public ModelAndView showWatchlistItemForm(@RequestParam(required = false) Integer id) {
 
 		logger.info("GET /watchlist called");
-		
+
 		String viewName = "watchlistItemForm";
 
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -54,23 +54,27 @@ public class WatchlistController {
 	@PostMapping("/watchlistItemForm")
 	public ModelAndView submitWatchlistItemForm(@Valid WatchlistItem watchlistItem, BindingResult bindingResult)
 			throws DuplicateTitleException {
-		
+
 		logger.info("GET /watchlistItem called");
 
 		if (bindingResult.hasErrors()) {
 			return new ModelAndView("watchlistItemForm");
 		}
 		if ((watchlistService.getWatchlistItemsSize()) + 1 > 20) {
-			bindingResult.reject(null, "The watchlist is full, no more movies can be added");
+			bindingResult.reject(null, "The watchlist is full, no more movies can be added!");
 			return new ModelAndView("watchlistItemForm");
 		}
 		try {
-			watchlistService.addOrUpdateWatchlistItem(watchlistItem);
+			watchlistService.addOrUpdateWatchlistItem(watchlistItem);			
 		} catch (DuplicateTitleException e) {
 			bindingResult.rejectValue("title", "", "This title already exists on your watchlist");
 			return new ModelAndView("watchlistItemForm");
 		}
-		
+//		if (watchlistService.getWatchlistItems().get(0).getResponse().equals("Movie not found!")) {
+//			bindingResult.rejectValue("title", "", "This title not in DB");
+//			return new ModelAndView("watchlistItemForm");
+//		}
+
 		RedirectView redirect = new RedirectView();
 		redirect.setUrl("/watchlist");
 
@@ -79,7 +83,7 @@ public class WatchlistController {
 
 	@GetMapping("/watchlist")
 	public ModelAndView getWatchlist() {
-		
+
 		logger.info("GET /watchlistItem called");
 
 		String viewName = "watchlist";

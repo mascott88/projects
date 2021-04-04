@@ -32,7 +32,7 @@ public class WatchlistRepository {
 
 	public WatchlistItem findByTitle(String title) {
 		for (WatchlistItem watchlistItem : watchlistItems) {
-			if (watchlistItem.getTitle().equals(title)) {
+			if (watchlistItem.getTitle().equalsIgnoreCase(title)) {
 				return watchlistItem;
 			}
 		}

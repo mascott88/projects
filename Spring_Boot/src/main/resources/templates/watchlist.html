@@ -34,6 +34,8 @@
 			<thead class="thead-light">
 				<tr>
 					<th class="text-left">Title</th>
+					<th class="text-left">Year</th>
+					<th class="text-left">Length</th>
 					<th class="text-left">Rating</th>
 					<th class="text-left">Priority</th>
 					<th class="text-left">Comment</th>
@@ -41,8 +43,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="watchlistItem : ${watchlistItems}">
+				<tr th:each="watchlistItem : ${watchlistItems}">				
 					<td th:text="${watchlistItem.title}">Avatar</td>
+					<td th:text="${watchlistItem.year}">2009</td>
+					<td th:text="${watchlistItem.length}">162 min</td>
 					<td th:text="${watchlistItem.rating}">7.8</td>
 					<td th:text="${watchlistItem.priority}">LOW</td>
 					<td th:text="${watchlistItem.comment}">Peter recommended</td>					

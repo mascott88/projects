@@ -1,4 +1,4 @@
-package com.openclassrooms.watchlist;
+package com.openclassrooms.watchlist.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -11,5 +11,7 @@ public class MvcConfig implements WebMvcConfigurer {
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("home.html");
 		registry.addViewController("/home").setViewName("home.html");
+		registry.addViewController("/watchlistItemForm").setViewName("watchlistItemForm.html");
+		registry.addViewController("/watchlist").setViewName("watchlist.html");
 	}
 }

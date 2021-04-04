@@ -1,7 +1,12 @@
-package com.openclassrooms.watchlist;
+package com.openclassrooms.watchlist.domain;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import com.openclassrooms.watchlist.validation.BadMovie;
+import com.openclassrooms.watchlist.validation.GoodMovie;
+import com.openclassrooms.watchlist.validation.Priority;
+import com.openclassrooms.watchlist.validation.Rating;
 
 @GoodMovie
 @BadMovie

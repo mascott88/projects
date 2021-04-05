@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.openclassrooms.watchlist.domain.WatchlistItem;
 import com.openclassrooms.watchlist.exception.DuplicateTitleException;
+import com.openclassrooms.watchlist.exception.MovieNotFoundException;
 import com.openclassrooms.watchlist.repository.WatchlistRepository;
 
 @Service
@@ -27,7 +28,7 @@ public class WatchlistService {
 				watchlistItem.setYear(year);
 			}
 			String length = movieDirectoryService.getMovieLength(watchlistItem.getTitle());
-			if (year != null) {
+			if (length != null) {
 				watchlistItem.setLength(length);
 			}
 			String response = movieDirectoryService.getMovieResponse(watchlistItem.getTitle());
@@ -46,21 +47,27 @@ public class WatchlistService {
 		return watchlistRepository.findById(id);
 	}
 
-	public void addOrUpdateWatchlistItem(WatchlistItem watchlistItem) throws DuplicateTitleException {
+	public void addOrUpdateWatchlistItem(WatchlistItem watchlistItem)
+			throws DuplicateTitleException, MovieNotFoundException {
 
 		WatchlistItem existingItem = findWatchlistItemById(watchlistItem.getId());
-
+		watchlistItem.setResponse(movieDirectoryService.getMovieResponse(watchlistItem.getTitle()));
+		
 		if (existingItem == null) {
 			if (watchlistRepository.findByTitle(watchlistItem.getTitle()) != null) {
 				throw new DuplicateTitleException();
-			}			
-			watchlistRepository.addItem(watchlistItem);
-		} else {			
+			}
+			if (watchlistItem.getResponse().equals("Movie not found!")) {
+				throw new MovieNotFoundException();
+			} else {
+				watchlistRepository.addItem(watchlistItem);
+			}
+		} else {
 			existingItem.setComment(watchlistItem.getComment());
 			existingItem.setPriority(watchlistItem.getPriority());
 			existingItem.setRating(watchlistItem.getRating());
 			existingItem.setTitle(watchlistItem.getTitle());
-			existingItem.setYear(watchlistItem.getYear());			
+			existingItem.setYear(watchlistItem.getYear());
 			existingItem.setResponse(watchlistItem.getResponse());
 		}
 	}

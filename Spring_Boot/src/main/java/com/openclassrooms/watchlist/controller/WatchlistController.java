@@ -17,6 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.openclassrooms.watchlist.domain.WatchlistItem;
 import com.openclassrooms.watchlist.exception.DuplicateTitleException;
+import com.openclassrooms.watchlist.exception.MovieNotFoundException;
 import com.openclassrooms.watchlist.service.WatchlistService;
 
 @Controller
@@ -48,37 +49,8 @@ public class WatchlistController {
 		} else {
 			model.put("watchlistItem", watchlistItem);
 		}
+		
 		return new ModelAndView(viewName, model);
-	}
-
-	@PostMapping("/watchlistItemForm")
-	public ModelAndView submitWatchlistItemForm(@Valid WatchlistItem watchlistItem, BindingResult bindingResult)
-			throws DuplicateTitleException {
-
-		logger.info("GET /watchlistItem called");
-
-		if (bindingResult.hasErrors()) {
-			return new ModelAndView("watchlistItemForm");
-		}
-		if ((watchlistService.getWatchlistItemsSize()) + 1 > 20) {
-			bindingResult.reject(null, "The watchlist is full, no more movies can be added!");
-			return new ModelAndView("watchlistItemForm");
-		}
-		try {
-			watchlistService.addOrUpdateWatchlistItem(watchlistItem);			
-		} catch (DuplicateTitleException e) {
-			bindingResult.rejectValue("title", "", "This title already exists on your watchlist");
-			return new ModelAndView("watchlistItemForm");
-		}
-//		if (watchlistService.getWatchlistItems().get(0).getResponse().equals("Movie not found!")) {
-//			bindingResult.rejectValue("title", "", "This title not in DB");
-//			return new ModelAndView("watchlistItemForm");
-//		}
-
-		RedirectView redirect = new RedirectView();
-		redirect.setUrl("/watchlist");
-
-		return new ModelAndView(redirect);
 	}
 
 	@GetMapping("/watchlist")
@@ -94,5 +66,34 @@ public class WatchlistController {
 		model.put("numberOfMovies", watchlistService.getWatchlistItemsSize());
 
 		return new ModelAndView(viewName, model);
+	}
+
+	@PostMapping("/watchlistItemForm")
+	public ModelAndView submitWatchlistItemForm(@Valid WatchlistItem watchlistItem, BindingResult bindingResult)
+			throws MovieNotFoundException {
+
+		logger.info("GET /watchlistItem called");
+
+		if (bindingResult.hasErrors()) {
+			return new ModelAndView("watchlistItemForm");
+		}
+		if ((watchlistService.getWatchlistItemsSize()) + 1 > 20) {
+			bindingResult.reject(null, "The watchlist is full, no more movies can be added!");
+			return new ModelAndView("watchlistItemForm");
+		}
+		try {
+			watchlistService.addOrUpdateWatchlistItem(watchlistItem);
+
+		} catch (DuplicateTitleException e) {
+			bindingResult.rejectValue("title", "", "This title already exists on your watchlist");
+			return new ModelAndView("watchlistItemForm");
+		} catch (MovieNotFoundException e) {
+			bindingResult.reject(null, "This movie title was not found in the IMDb!");
+			return new ModelAndView("watchlistItemForm");
+		}
+		RedirectView redirect = new RedirectView();
+		redirect.setUrl("/watchlist");
+
+		return new ModelAndView(redirect);
 	}
 }

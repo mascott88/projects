@@ -1,7 +1,6 @@
 package com.openclassrooms.watchlist.repository;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -41,11 +40,13 @@ public class WatchlistRepository {
 	}
 
 	public void removeWatchlistItemById(Integer id) {
-		for (Iterator<WatchlistItem> x = watchlistItems.iterator(); x.hasNext();) {
-			WatchlistItem integer = x.next();
-			if (integer.getId() == id) {
-				x.remove();
+		List<WatchlistItem> toRemove = new ArrayList<>();
+
+		for (WatchlistItem x : watchlistItems) {
+			if (x.getId() == id) {
+				toRemove.add(x);
 			}
 		}
+		watchlistItems.removeAll(toRemove);
 	}
 }

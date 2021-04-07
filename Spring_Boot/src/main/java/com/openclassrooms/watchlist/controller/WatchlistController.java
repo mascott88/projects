@@ -69,8 +69,7 @@ public class WatchlistController {
 	}
 
 	@PostMapping("/watchlistItemForm")
-	public ModelAndView submitWatchlistItemForm(@Valid WatchlistItem watchlistItem, BindingResult bindingResult)
-			throws MovieNotFoundException, DuplicateTitleException {
+	public ModelAndView submitWatchlistItemForm(@Valid WatchlistItem watchlistItem, BindingResult bindingResult) throws MovieNotFoundException, DuplicateTitleException {
 
 		logger.info("POST /watchlistItemForm called");
 
@@ -102,7 +101,7 @@ public class WatchlistController {
 	public ModelAndView removeWatchListItem(WatchlistItem watchlistItem) {
 
 		logger.info("POST /watchlist called");
-		System.out.println(watchlistItem.getId());
+		
 		if (watchlistItem.getId() != null) {
 			watchlistService.removeWatchlistItem(watchlistItem);	
 		}

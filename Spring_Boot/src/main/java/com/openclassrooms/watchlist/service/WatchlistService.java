@@ -47,7 +47,7 @@ public class WatchlistService {
 		return watchlistRepository.findById(id);
 	}
 
-	public void removeWatchlistItem(WatchlistItem watchlistItem) {		
+	public void removeWatchlistItem(WatchlistItem watchlistItem) {
 		watchlistRepository.removeWatchlistItemById(watchlistItem.getId());
 	}
 
@@ -60,7 +60,7 @@ public class WatchlistService {
 			if (watchlistRepository.findByTitle(watchlistItem.getTitle()) != null) {
 				throw new DuplicateTitleException();
 			}
-			if (watchlistItem.getResponse().equals("Movie not found!")) {
+			if (!watchlistItem.getResponse().equals(null) && watchlistItem.getResponse().equals("Movie not found!")) {
 				throw new MovieNotFoundException();
 			} else {
 				watchlistRepository.addItem(watchlistItem);

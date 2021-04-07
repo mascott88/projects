@@ -36,7 +36,7 @@ public class WatchlistController {
 	@GetMapping("/watchlistItemForm")
 	public ModelAndView showWatchlistItemForm(@RequestParam(required = false) Integer id) {
 
-		logger.info("GET /watchlist called");
+		logger.info("GET /watchlistItemForm called");
 
 		String viewName = "watchlistItemForm";
 
@@ -49,15 +49,15 @@ public class WatchlistController {
 		} else {
 			model.put("watchlistItem", watchlistItem);
 		}
-		
+
 		return new ModelAndView(viewName, model);
 	}
 
 	@GetMapping("/watchlist")
-	public ModelAndView getWatchlist() {
+	public ModelAndView getWatchlist(@RequestParam(required = false) Integer id) {
 
-		logger.info("GET /watchlistItem called");
-
+		logger.info("GET /watchlist called");
+		System.out.println(id);
 		String viewName = "watchlist";
 
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -70,13 +70,14 @@ public class WatchlistController {
 
 	@PostMapping("/watchlistItemForm")
 	public ModelAndView submitWatchlistItemForm(@Valid WatchlistItem watchlistItem, BindingResult bindingResult)
-			throws MovieNotFoundException {
+			throws MovieNotFoundException, DuplicateTitleException {
 
-		logger.info("GET /watchlistItem called");
+		logger.info("POST /watchlistItemForm called");
 
 		if (bindingResult.hasErrors()) {
 			return new ModelAndView("watchlistItemForm");
 		}
+
 		if ((watchlistService.getWatchlistItemsSize()) + 1 > 20) {
 			bindingResult.reject(null, "The watchlist is full, no more movies can be added!");
 			return new ModelAndView("watchlistItemForm");
@@ -95,5 +96,20 @@ public class WatchlistController {
 		redirect.setUrl("/watchlist");
 
 		return new ModelAndView(redirect);
+	}
+
+	@PostMapping("/watchlist")
+	public ModelAndView removeWatchListItem(WatchlistItem watchlistItem) {
+
+		logger.info("POST /watchlist called");
+		System.out.println(watchlistItem.getId());
+		if (watchlistItem.getId() != null) {
+			watchlistService.removeWatchlistItem(watchlistItem);	
+		}
+		RedirectView redirect = new RedirectView();
+		redirect.setUrl("/watchlist");
+
+		return new ModelAndView(redirect);
+
 	}
 }

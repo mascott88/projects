@@ -47,12 +47,15 @@ public class WatchlistService {
 		return watchlistRepository.findById(id);
 	}
 
-	public void addOrUpdateWatchlistItem(WatchlistItem watchlistItem)
-			throws DuplicateTitleException, MovieNotFoundException {
+	public void removeWatchlistItem(WatchlistItem watchlistItem) {		
+		watchlistRepository.removeWatchlistItemById(watchlistItem.getId());
+	}
+
+	public void addOrUpdateWatchlistItem(WatchlistItem watchlistItem) throws DuplicateTitleException, MovieNotFoundException {
 
 		WatchlistItem existingItem = findWatchlistItemById(watchlistItem.getId());
 		watchlistItem.setResponse(movieDirectoryService.getMovieResponse(watchlistItem.getTitle()));
-		
+
 		if (existingItem == null) {
 			if (watchlistRepository.findByTitle(watchlistItem.getTitle()) != null) {
 				throw new DuplicateTitleException();

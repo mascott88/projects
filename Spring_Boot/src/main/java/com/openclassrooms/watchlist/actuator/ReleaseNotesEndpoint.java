@@ -17,7 +17,8 @@ public class ReleaseNotesEndpoint {
 	
 	String version11 = "** Version 1.1 \n\n"
 			+ "* Reading from OMDb API added \n"
-			+ "* Actuator endpoints added \n";
+			+ "* Actuator endpoints added \n"
+			;
 	
 	@ReadOperation
 	public String releaseNotes() {

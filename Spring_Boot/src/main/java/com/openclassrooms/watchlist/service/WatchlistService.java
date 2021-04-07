@@ -51,7 +51,8 @@ public class WatchlistService {
 		watchlistRepository.removeWatchlistItemById(watchlistItem.getId());
 	}
 
-	public void addOrUpdateWatchlistItem(WatchlistItem watchlistItem) throws DuplicateTitleException, MovieNotFoundException {
+	public void addOrUpdateWatchlistItem(WatchlistItem watchlistItem)
+			throws DuplicateTitleException, MovieNotFoundException {
 
 		WatchlistItem existingItem = findWatchlistItemById(watchlistItem.getId());
 		watchlistItem.setResponse(movieDirectoryService.getMovieResponse(watchlistItem.getTitle()));
@@ -66,6 +67,9 @@ public class WatchlistService {
 				watchlistRepository.addItem(watchlistItem);
 			}
 		} else {
+			if (!watchlistItem.getResponse().equals("Movie not found!")) {
+				throw new MovieNotFoundException();
+			}
 			existingItem.setComment(watchlistItem.getComment());
 			existingItem.setPriority(watchlistItem.getPriority());
 			existingItem.setRating(watchlistItem.getRating());

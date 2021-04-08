@@ -48,10 +48,13 @@
 					<td th:text="${watchlistItem.priority}">LOW</td>
 					<td th:text="${watchlistItem.comment}">Peter recommended</td>
 					<td th:field="${watchlistItem.id}"></td>
-					<td><a href="#" class="btn btn-info" role="button" th:href="@{/watchlistItemForm(id=${watchlistItem.id})}">Update</a></td>
-					<td><form method="POST" th:action="@{/watchlist(id=${watchlistItem.id})}">
-					<button type="submit" name="submit" value="remove" class="btn btn-info">Remove</button></form>
-				 	</td>
+					<td><a href="#" class="btn btn-info" role="button"
+						th:href="@{/watchlistItemForm(id=${watchlistItem.id})}">Update</a></td>
+					<td><form method="POST"
+							th:action="@{/watchlist(id=${watchlistItem.id})}">
+							<button type="submit" name="submit" value="remove"
+								class="btn btn-info">Remove</button>
+						</form></td>
 				</tr>
 			</tbody>
 		</table>

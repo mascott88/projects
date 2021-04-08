@@ -56,8 +56,7 @@ public class WatchlistController {
 	@GetMapping("/watchlist")
 	public ModelAndView getWatchlist(@RequestParam(required = false) Integer id) {
 
-		logger.info("GET /watchlist called");
-		System.out.println(id);
+		logger.info("GET /watchlist called");		
 		String viewName = "watchlist";
 
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -109,6 +108,5 @@ public class WatchlistController {
 		redirect.setUrl("/watchlist");
 
 		return new ModelAndView(redirect);
-
 	}
 }

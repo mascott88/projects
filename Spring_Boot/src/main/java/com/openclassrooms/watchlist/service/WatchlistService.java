@@ -67,9 +67,6 @@ public class WatchlistService {
 				watchlistRepository.addItem(watchlistItem);
 			}
 		} else {
-			if (watchlistRepository.findByTitle(watchlistItem.getTitle()) != null) {
-				throw new DuplicateTitleException();
-			}
 			if (watchlistItem.getResponse().equals("Movie not found!")) {
 				throw new MovieNotFoundException();
 			}
